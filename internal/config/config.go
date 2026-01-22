@@ -7,9 +7,9 @@ import (
 )
 
 // SetDefaults configures sensible defaults for the application.
+// Note: API key must be provided via SYN_API_KEY env var or config file.
 func SetDefaults() {
-	// API defaults
-	viper.SetDefault("api.key", "syn_2afa3d6ae1d48878694a13cbbe35d76c")
+	// API defaults (key intentionally omitted - must be configured by user)
 	viper.SetDefault("api.base_url", "https://api.synthetic.new/openai/v1")
 	viper.SetDefault("api.anthropic_base_url", "https://api.synthetic.new/anthropic/v1")
 	viper.SetDefault("api.model", "hf:deepseek-ai/DeepSeek-V3.2")
