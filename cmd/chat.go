@@ -75,19 +75,18 @@ func runInteractiveChat() error {
 	printWelcomeBanner()
 
 	scanner := bufio.NewScanner(os.Stdin)
-	inputCh := make(chan inputResult)
+
+	// Single goroutine for reading input - avoids leak from spawning per iteration
+	inputCh := make(chan inputResult, 1)
+	go func() {
+		for scanner.Scan() {
+			inputCh <- inputResult{text: scanner.Text()}
+		}
+		inputCh <- inputResult{err: scanner.Err()}
+	}()
 
 	for {
 		fmt.Print(theme.UserPrompt.Render("you> "))
-
-		// Read input in goroutine so we can also watch for Ctrl-C
-		go func() {
-			if scanner.Scan() {
-				inputCh <- inputResult{text: scanner.Text()}
-			} else {
-				inputCh <- inputResult{err: scanner.Err()}
-			}
-		}()
 
 		// Wait for either input or cancellation
 		select {
