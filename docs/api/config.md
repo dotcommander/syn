@@ -46,7 +46,7 @@ The config package uses Viper for configuration management. Defaults are set fir
 3. Command-line flags
 
 ```go
-import "github.com/vampire/syn/internal/config"
+import "github.com/dotcommander/syn/internal/config"
 
 func main() {
     config.SetDefaults()

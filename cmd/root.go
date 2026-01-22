@@ -13,7 +13,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	"github.com/vampire/syn/internal/app"
+	"github.com/dotcommander/syn/internal/app"
 )
 
 var (

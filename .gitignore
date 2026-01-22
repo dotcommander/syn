@@ -1,0 +1,24 @@
+# Binary
+syn
+
+# Dev artifacts
+debug.sh
+looper-spec.md
+looper-state.json
+SPEC.md
+
+# Generated
+docs/specs/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Config (may contain API keys)
+config.yaml

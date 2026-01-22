@@ -15,8 +15,8 @@ import (
     "log/slog"
     "time"
 
-    "github.com/vampire/syn/internal/app"
-    "github.com/vampire/syn/internal/config"
+    "github.com/dotcommander/syn/internal/app"
+    "github.com/dotcommander/syn/internal/config"
 )
 
 func main() {
@@ -60,7 +60,7 @@ import (
     "context"
     "fmt"
 
-    "github.com/vampire/syn/internal/app"
+    "github.com/dotcommander/syn/internal/app"
 )
 
 func main() {
@@ -121,7 +121,7 @@ import (
     "fmt"
     "os"
 
-    "github.com/vampire/syn/internal/app"
+    "github.com/dotcommander/syn/internal/app"
 )
 
 func main() {
@@ -174,7 +174,7 @@ import (
     "context"
     "fmt"
 
-    "github.com/vampire/syn/internal/app"
+    "github.com/dotcommander/syn/internal/app"
 )
 
 func main() {
@@ -222,7 +222,7 @@ import (
     "context"
     "fmt"
 
-    "github.com/vampire/syn/internal/app"
+    "github.com/dotcommander/syn/internal/app"
 )
 
 func main() {
@@ -265,7 +265,7 @@ import (
     "context"
     "fmt"
 
-    "github.com/vampire/syn/internal/app"
+    "github.com/dotcommander/syn/internal/app"
 )
 
 func main() {

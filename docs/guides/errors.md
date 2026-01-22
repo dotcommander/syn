@@ -232,4 +232,4 @@ If you encounter an error not covered in this guide:
 
 1. Enable verbose mode to see detailed logs
 2. Check the API documentation for the specific endpoint
-3. Report issues at: <https://github.com/vampire/syn/issues>
+3. Report issues at: <https://github.com/dotcommander/syn/issues>

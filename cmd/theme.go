@@ -20,6 +20,7 @@ type Theme struct {
 	Divider     lipgloss.Style
 	Dim         lipgloss.Style
 	Info        lipgloss.Style
+	SuccessText lipgloss.Style
 	ErrorText   lipgloss.Style
 	HelpText    lipgloss.Style
 	Description lipgloss.Style
@@ -67,6 +68,9 @@ func DefaultTheme() *Theme {
 
 	t.Info = lipgloss.NewStyle().
 		Foreground(t.Accent)
+
+	t.SuccessText = lipgloss.NewStyle().
+		Foreground(t.Success)
 
 	t.ErrorText = lipgloss.NewStyle().
 		Bold(true).

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/vampire/syn/cmd"
-	"github.com/vampire/syn/internal/config"
+	"github.com/dotcommander/syn/cmd"
+	"github.com/dotcommander/syn/internal/config"
 )
 
 func main() {

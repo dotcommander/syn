@@ -1,4 +1,4 @@
-module github.com/vampire/syn
+module github.com/dotcommander/syn
 
 go 1.25.4
 
