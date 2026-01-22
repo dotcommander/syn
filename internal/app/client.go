@@ -208,24 +208,11 @@ func (c *Client) doRequest(ctx context.Context, messages []Message, opts ChatOpt
 		return "", Usage{}, fmt.Errorf("failed to create request: %w", err)
 	}
 
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.config.APIKey))
-
 	c.logger.Debug("sending request", "url", url)
 
-	resp, err := c.httpClient.Do(req)
+	body, err := c.doHTTPRequest(req, "application/json")
 	if err != nil {
-		return "", Usage{}, fmt.Errorf("failed to send request: %w", err)
-	}
-	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return "", Usage{}, fmt.Errorf("failed to read response: %w", err)
-	}
-
-	if resp.StatusCode != http.StatusOK {
-		return "", Usage{}, &APIError{StatusCode: resp.StatusCode, Body: string(body)}
+		return "", Usage{}, err
 	}
 
 	var chatResp ChatResponse
@@ -244,10 +231,7 @@ func (c *Client) doRequest(ctx context.Context, messages []Message, opts ChatOpt
 func (c *Client) doRequestWithRetry(ctx context.Context, messages []Message, opts ChatOptions) (string, Usage, error) {
 	var lastErr error
 
-	maxAttempts := c.config.RetryConfig.MaxAttempts
-	if maxAttempts < 1 {
-		maxAttempts = 1
-	}
+	maxAttempts := max(c.config.RetryConfig.MaxAttempts, 1)
 
 	initialBackoff := c.config.RetryConfig.InitialBackoff
 	if initialBackoff < 1 {
@@ -330,15 +314,9 @@ func isRetryableError(err error) bool {
 
 // calculateBackoff calculates exponential backoff with jitter.
 func calculateBackoff(attempt int, initialBackoff, maxBackoff time.Duration) time.Duration {
-	if attempt > 62 {
-		attempt = 62
-	}
+	attempt = min(attempt, 62)
 
-	backoff := initialBackoff * time.Duration(1<<uint(attempt-1))
-
-	if backoff > maxBackoff {
-		backoff = maxBackoff
-	}
+	backoff := min(initialBackoff*time.Duration(1<<uint(attempt-1)), maxBackoff)
 
 	jitterRange := float64(backoff) * 0.125
 	jitter := time.Duration(jitterRange * (2.0*rand.Float64() - 1.0))
@@ -346,21 +324,13 @@ func calculateBackoff(attempt int, initialBackoff, maxBackoff time.Duration) tim
 	return backoff + jitter
 }
 
-// ListModels fetches available models from the API.
-func (c *Client) ListModels(ctx context.Context) ([]Model, error) {
-	if err := c.requireAPIKey(); err != nil {
-		return nil, err
+// doHTTPRequest executes an HTTP request with standard header setup, response reading, and status validation.
+// Consolidates the repeated pattern of: set headers -> do request -> read body -> check status.
+func (c *Client) doHTTPRequest(req *http.Request, contentType string) ([]byte, error) {
+	if contentType != "" {
+		req.Header.Set("Content-Type", contentType)
 	}
-
-	url := fmt.Sprintf("%s/models", c.config.BaseURL)
-	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create request: %w", err)
-	}
-
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.config.APIKey))
-
-	c.logger.Debug("sending request", "url", url)
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
@@ -375,6 +345,28 @@ func (c *Client) ListModels(ctx context.Context) ([]Model, error) {
 
 	if resp.StatusCode != http.StatusOK {
 		return nil, &APIError{StatusCode: resp.StatusCode, Body: string(body)}
+	}
+
+	return body, nil
+}
+
+// ListModels fetches available models from the API.
+func (c *Client) ListModels(ctx context.Context) ([]Model, error) {
+	if err := c.requireAPIKey(); err != nil {
+		return nil, err
+	}
+
+	url := fmt.Sprintf("%s/models", c.config.BaseURL)
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	c.logger.Debug("sending request", "url", url)
+
+	body, err := c.doHTTPRequest(req, "")
+	if err != nil {
+		return nil, err
 	}
 
 	var modelsResp ModelsResponse
@@ -415,24 +407,11 @@ func (c *Client) Embed(ctx context.Context, texts []string, model string) (*Embe
 		return nil, fmt.Errorf("failed to create request: %w", err)
 	}
 
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.config.APIKey))
-
 	c.logger.Debug("sending embeddings request", "url", url, "texts", len(texts))
 
-	resp, err := c.httpClient.Do(req)
+	body, err := c.doHTTPRequest(req, "application/json")
 	if err != nil {
-		return nil, fmt.Errorf("failed to send request: %w", err)
-	}
-	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read response: %w", err)
-	}
-
-	if resp.StatusCode != http.StatusOK {
-		return nil, &APIError{StatusCode: resp.StatusCode, Body: string(body)}
+		return nil, err
 	}
 
 	var embedResp EmbeddingResponse
@@ -487,7 +466,7 @@ func (c *Client) Vision(ctx context.Context, prompt string, imageSource string, 
 	}
 
 	// Build multimodal message content
-	content := []map[string]interface{}{
+	content := []map[string]any{
 		{
 			"type": "image_url",
 			"image_url": map[string]string{
@@ -500,9 +479,9 @@ func (c *Client) Vision(ctx context.Context, prompt string, imageSource string, 
 		},
 	}
 
-	reqData := map[string]interface{}{
+	reqData := map[string]any{
 		"model": model,
-		"messages": []map[string]interface{}{
+		"messages": []map[string]any{
 			{
 				"role":    "user",
 				"content": content,
@@ -526,24 +505,11 @@ func (c *Client) Vision(ctx context.Context, prompt string, imageSource string, 
 		return "", fmt.Errorf("failed to create request: %w", err)
 	}
 
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.config.APIKey))
-
 	c.logger.Debug("sending vision request", "url", url, "model", model)
 
-	resp, err := c.httpClient.Do(req)
+	body, err := c.doHTTPRequest(req, "application/json")
 	if err != nil {
-		return "", fmt.Errorf("failed to send request: %w", err)
-	}
-	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return "", fmt.Errorf("failed to read response: %w", err)
-	}
-
-	if resp.StatusCode != http.StatusOK {
-		return "", &APIError{StatusCode: resp.StatusCode, Body: string(body)}
+		return "", err
 	}
 
 	var chatResp ChatResponse
@@ -582,24 +548,11 @@ func (c *Client) Search(ctx context.Context, query string) (*SearchResponse, err
 		return nil, fmt.Errorf("failed to create request: %w", err)
 	}
 
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.config.APIKey))
-
 	c.logger.Debug("sending search request", "url", url, "query", query)
 
-	resp, err := c.httpClient.Do(req)
+	body, err := c.doHTTPRequest(req, "application/json")
 	if err != nil {
-		return nil, fmt.Errorf("failed to send request: %w", err)
-	}
-	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read response: %w", err)
-	}
-
-	if resp.StatusCode != http.StatusOK {
-		return nil, &APIError{StatusCode: resp.StatusCode, Body: string(body)}
+		return nil, err
 	}
 
 	var searchResp SearchResponse
