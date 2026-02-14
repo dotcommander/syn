@@ -41,7 +41,7 @@ cat error.log | syn "What went wrong?"
 
 # Select model
 syn -m kimi "Complex reasoning task"
-syn -m qwen "Describe this architecture"
+syn -m coder "Refactor this function"
 
 # JSON output
 syn --json "List 3 facts about Go"
@@ -65,8 +65,8 @@ syn search --json "react server components"
 ### Vision
 
 ```bash
-syn vision screenshot.png "What's in this image?"
-syn vision https://example.com/diagram.png "Explain this diagram"
+syn vision -f screenshot.png "What's in this image?"
+syn vision -f https://example.com/diagram.png "Explain this diagram"
 ```
 
 ### Embeddings
