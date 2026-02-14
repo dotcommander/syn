@@ -14,24 +14,26 @@ import (
 )
 
 var visionCmd = &cobra.Command{ //nolint:gochecknoglobals // cobra command registration
-	Use:   "vision <image> [prompt]",
+	Use:   "vision [prompt]",
 	Short: "Analyze images with AI",
 	Long: `Analyze images using a vision-capable model.
 
 Examples:
-  syn vision photo.jpg "What's in this image?"
-  syn vision https://example.com/image.png "Describe this"
-  syn vision screenshot.png  # Uses default prompt
+  syn vision -f photo.jpg "What's in this image?"
+  syn vision -f https://example.com/image.png "Describe this"
+  syn vision -f screenshot.png  # Uses default prompt
 
 Supported formats: JPEG, PNG, GIF, WebP
-Accepts URLs or local file paths.`,
-	Args: cobra.MinimumNArgs(1),
+Accepts URLs or local file paths via -f flag.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		imageSource := args[0]
+		imageSource := viper.GetString("file")
+		if imageSource == "" {
+			return fmt.Errorf("image required: use -f <image>")
+		}
 
 		prompt := "What do you see in this image? Please describe it in detail."
-		if len(args) > 1 {
-			prompt = strings.Join(args[1:], " ")
+		if len(args) > 0 {
+			prompt = strings.Join(args, " ")
 		}
 
 		return runVision(imageSource, prompt)
