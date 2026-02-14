@@ -1,0 +1,27 @@
+# Binary
+syn
+bin/
+
+# Dev artifacts
+debug.sh
+SPEC.md
+
+# Generated
+docs/specs/
+analysis-results/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Config (may contain API keys)
+config.yaml
+
+# Claude Code local settings
+.claude/settings.local.json

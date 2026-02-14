@@ -1,0 +1,5 @@
+In this lecture, Walter Lewin explains that physics is not a collection of formulas but a way to see the world with structure and measurement. He emphasizes that intuition must be tested against quantitative reasoning, because our instincts fail in surprising situations. He repeatedly asks students to estimate first, then calculate, then compare with experiment.
+
+He uses demonstrations to show that tiny differences in assumptions can produce large differences in outcomes. A model is useful only when you state its assumptions clearly and keep track of uncertainty. He warns that elegant math can still be wrong if you ignore boundary conditions or measurement error.
+
+The practical message is disciplined thinking: define variables, state assumptions, check units, and verify results against reality. A good summary should preserve both the excitement of discovery and the caution that evidence beats confidence.
