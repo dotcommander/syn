@@ -1,0 +1,11 @@
+{
+  "id": "02",
+  "title": "Laravel transfer endpoint correctness",
+  "key_insights": [
+    "The endpoint lacks request validation, allowing invalid or unsafe transfer inputs.",
+    "Transfer operations must be wrapped in a database transaction to prevent partial updates.",
+    "Concurrent balance updates require locking or equivalent safeguards to avoid race conditions.",
+    "Authorization must verify the caller can initiate the transfer.",
+    "Business rules like positive amount and sufficient funds are not enforced."
+  ]
+}

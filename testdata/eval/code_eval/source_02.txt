@@ -1,0 +1,27 @@
+Laravel 12.x controller snippet:
+
+public function transfer(Request $request)
+{
+    $fromId = $request->input('from_user_id');
+    $toId = $request->input('to_user_id');
+    $amount = $request->input('amount');
+
+    $from = User::find($fromId);
+    $to = User::find($toId);
+
+    $from->balance = $from->balance - $amount;
+    $to->balance = $to->balance + $amount;
+
+    $from->save();
+    $to->save();
+
+    return response()->json(['ok' => true]);
+}
+
+Code review notes:
+- No validation rules for ids and amount.
+- Not wrapped in DB transaction; partial writes are possible.
+- No row-level locking; race conditions can corrupt balances.
+- Missing authorization checks.
+- No guard against negative or zero transfer amount.
+- No insufficient-funds check.

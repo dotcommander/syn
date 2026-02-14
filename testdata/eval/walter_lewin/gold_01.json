@@ -1,0 +1,12 @@
+{
+  "id": "01",
+  "title": "Lewin lecture key-insight extraction",
+  "key_insights": [
+    "Physics is presented as a structured way of seeing the world, not just formulas.",
+    "Intuition must be validated with quantitative reasoning and experiment.",
+    "The process is estimate first, then calculate, then compare with evidence.",
+    "Explicit assumptions and uncertainty tracking are essential for useful models.",
+    "Ignoring boundary conditions or measurement error can invalidate elegant math.",
+    "Disciplined thinking includes defining variables, checking units, and reality checks."
+  ]
+}

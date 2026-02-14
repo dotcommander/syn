@@ -1,0 +1,22 @@
+Go service snippet:
+
+func handler(w http.ResponseWriter, r *http.Request) {
+    body, _ := io.ReadAll(r.Body)
+    var req map[string]any
+    _ = json.Unmarshal(body, &req)
+
+    userID := req["user_id"].(string)
+    amount := req["amount"].(float64)
+
+    db.Exec("UPDATE balance SET value = value - ? WHERE user_id = ?", amount, userID)
+    w.WriteHeader(http.StatusOK)
+    w.Write([]byte("ok"))
+}
+
+Code review notes:
+- Ignored errors on body read and JSON parse.
+- Unsafe type assertions can panic on malformed input.
+- No input validation for amount/user_id.
+- Missing transaction handling around money update.
+- No check on rows affected; may report success on no-op.
+- Response is always 200 even on failures.
