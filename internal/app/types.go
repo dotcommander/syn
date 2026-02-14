@@ -162,12 +162,16 @@ func (e *APIError) Error() string {
 var modelAliases = map[string]string{ //nolint:gochecknoglobals // read-only lookup table, idiomatic Go
 	"gptoss":   "hf:openai/gpt-oss-120b",
 	"gpt":      "hf:openai/gpt-oss-120b",
-	"kimi":     "hf:moonshotai/Kimi-K2-Thinking",
-	"qwen":     "hf:Qwen/Qwen3-VL-235B-A22B-Instruct",
+	"kimi":     "hf:moonshotai/Kimi-K2.5",
+	"qwen":     "hf:Qwen/Qwen3-235B-A22B-Thinking-2507",
+	"coder":    "hf:Qwen/Qwen3-Coder-480B-A35B-Instruct",
 	"glm":      "hf:zai-org/GLM-4.7",
 	"zai":      "hf:zai-org/GLM-4.7",
 	"deepseek": "hf:deepseek-ai/DeepSeek-V3.2",
 	"ds":       "hf:deepseek-ai/DeepSeek-V3.2",
+	"r1":       "hf:deepseek-ai/DeepSeek-R1-0528",
+	"minimax":  "hf:MiniMaxAI/MiniMax-M2.1",
+	"llama":    "hf:meta-llama/Llama-3.3-70B-Instruct",
 }
 
 // ModelAliases returns a copy of the model alias map.
