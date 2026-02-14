@@ -31,7 +31,7 @@ cmd/
   root.go                  # One-shot mode, stdin support, flag handling
   chat.go                  # Interactive REPL with context (20 msg window)
   search.go                # Web search via /v2/search endpoint
-  vision.go                # Image analysis via Qwen3-VL
+  vision.go                # Image analysis via vision-capable model
   embed.go                 # Text embeddings via nomic-embed-text
   model.go                 # Model listing
   theme.go                 # Lipgloss styles + spinner
@@ -46,11 +46,15 @@ internal/
 ## Key Patterns
 
 **Model aliases** (`internal/app/types.go`):
-- `kimi` → `hf:moonshotai/Kimi-K2-Thinking`
-- `qwen` → `hf:Qwen/Qwen3-VL-235B-A22B-Instruct` (vision)
+- `kimi` → `hf:moonshotai/Kimi-K2.5`
+- `qwen` → `hf:Qwen/Qwen3-235B-A22B-Thinking-2507`
+- `coder` → `hf:Qwen/Qwen3-Coder-480B-A35B-Instruct`
 - `glm`/`zai` → `hf:zai-org/GLM-4.7`
 - `gpt`/`gptoss` → `hf:openai/gpt-oss-120b`
 - `deepseek`/`ds` → `hf:deepseek-ai/DeepSeek-V3.2` (default)
+- `r1` → `hf:deepseek-ai/DeepSeek-R1-0528`
+- `minimax` → `hf:MiniMaxAI/MiniMax-M2.1`
+- `llama` → `hf:meta-llama/Llama-3.3-70B-Instruct`
 
 **API endpoints**:
 - Chat: `https://api.synthetic.new/openai/v1/chat/completions`

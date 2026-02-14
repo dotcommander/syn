@@ -206,7 +206,7 @@ Creates a structured logger for the application.
 func ResolveModel(model string) string
 ```
 
-Resolves model aliases (gpt, kimi, qwen, glm, deepseek) to full model names.
+Resolves model aliases (kimi, qwen, coder, glm, gpt, deepseek, r1, minimax, llama) to full model names.
 
 #### DefaultChatOptions
 
@@ -262,11 +262,15 @@ Performs a web search. Returns results with title, URL, snippet, and optional pu
 
 | Alias | Full Model Name |
 |-------|-----------------|
-| gpt, gptoss | hf:openai/gpt-oss-120b |
-| kimi | hf:moonshotai/Kimi-K2-Thinking |
-| qwen | hf:Qwen/Qwen3-VL-235B-A22B-Instruct |
+| kimi | hf:moonshotai/Kimi-K2.5 |
+| qwen | hf:Qwen/Qwen3-235B-A22B-Thinking-2507 |
+| coder | hf:Qwen/Qwen3-Coder-480B-A35B-Instruct |
 | glm, zai | hf:zai-org/GLM-4.7 |
+| gpt, gptoss | hf:openai/gpt-oss-120b |
 | deepseek, ds | hf:deepseek-ai/DeepSeek-V3.2 |
+| r1 | hf:deepseek-ai/DeepSeek-R1-0528 |
+| minimax | hf:MiniMaxAI/MiniMax-M2.1 |
+| llama | hf:meta-llama/Llama-3.3-70B-Instruct |
 
 ## CLI Commands
 
@@ -391,7 +395,7 @@ syn eval --dataset testdata/eval/walter_lewin
 syn eval --format json --out analysis-results/eval-report.json
 
 # Evaluate only selected models
-syn eval --models "hf:deepseek-ai/DeepSeek-V3.2,hf:moonshotai/Kimi-K2-Thinking"
+syn eval --models "hf:deepseek-ai/DeepSeek-V3.2,hf:moonshotai/Kimi-K2.5"
 
 # Keep persistent score history + leaderboard
 syn eval --history analysis-results/eval-history.jsonl --leaderboard-out analysis-results/eval-leaderboard.md

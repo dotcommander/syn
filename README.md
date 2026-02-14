@@ -103,11 +103,15 @@ syn eval --history analysis-results/eval-history.jsonl --leaderboard-out analysi
 
 | Alias | Model |
 |-------|-------|
-| `kimi` | Kimi-K2-Thinking |
-| `qwen` | Qwen3-VL-235B (vision) |
+| `kimi` | Kimi-K2.5 |
+| `qwen` | Qwen3-235B-Thinking |
+| `coder` | Qwen3-Coder-480B |
 | `glm` | GLM-4.7 |
 | `gpt` | GPT-OSS-120B |
 | `deepseek` | DeepSeek-V3.2 (default) |
+| `r1` | DeepSeek-R1 |
+| `minimax` | MiniMax-M2.1 |
+| `llama` | Llama-3.3-70B |
 
 ## Flags
 

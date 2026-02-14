@@ -100,7 +100,7 @@ func init() { //nolint:gochecknoinits // cobra command registration
 	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "verbose output")
 	rootCmd.PersistentFlags().StringVarP(&filePath, "file", "f", "", "include file contents in prompt")
 	rootCmd.PersistentFlags().BoolVar(&jsonOutput, "json", false, "output in JSON format")
-	rootCmd.PersistentFlags().StringVarP(&modelFlag, "model", "m", "", "model to use (aliases: kimi, glm, qwen, gpt)")
+	rootCmd.PersistentFlags().StringVarP(&modelFlag, "model", "m", "", "model to use (aliases: kimi, qwen, coder, glm, gpt, r1, minimax, llama)")
 
 	_ = viper.BindPFlag("verbose", rootCmd.PersistentFlags().Lookup("verbose"))
 	_ = viper.BindPFlag("file", rootCmd.PersistentFlags().Lookup("file"))
@@ -165,7 +165,7 @@ func styledHelp(cmd *cobra.Command, args []string) {
 	fmt.Println(theme.Section.Render("Flags"))
 	fmt.Println(theme.Divider.Render(strings.Repeat("-", 50)))
 	flags := [][]string{
-		{"-m, --model <name>", "Model (kimi, glm, qwen, gpt)"},
+		{"-m, --model <name>", "Model (kimi, qwen, coder, r1, glm, gpt, ...)"},
 		{"-f, --file <path>", "Include file contents in prompt"},
 		{"--json", "Output as JSON"},
 		{"-v, --verbose", "Show debug info"},
