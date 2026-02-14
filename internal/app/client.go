@@ -539,7 +539,7 @@ func (c *Client) Vision(ctx context.Context, prompt string, imageSource string, 
 		return "", err
 	}
 
-	model := ResolveModel("qwen")
+	model := ResolveModel("kimi")
 	if opts.Model != "" {
 		model = ResolveModel(opts.Model)
 	}

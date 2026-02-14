@@ -16,7 +16,7 @@ import (
 var visionCmd = &cobra.Command{ //nolint:gochecknoglobals // cobra command registration
 	Use:   "vision <image> [prompt]",
 	Short: "Analyze images with AI",
-	Long: `Analyze images using Qwen3-VL vision model.
+	Long: `Analyze images using a vision-capable model.
 
 Examples:
   syn vision photo.jpg "What's in this image?"
@@ -53,7 +53,7 @@ func runVision(imageSource, prompt string) error {
 	if viper.GetBool("verbose") {
 		fmt.Fprintf(os.Stderr, "Image: %s\n", imageSource)
 		fmt.Fprintf(os.Stderr, "Prompt: %s\n", prompt)
-		fmt.Fprintf(os.Stderr, "Model: %s\n", app.ResolveModel("qwen"))
+		fmt.Fprintf(os.Stderr, "Model: %s\n", app.ResolveModel("kimi"))
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
